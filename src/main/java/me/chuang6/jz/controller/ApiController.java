@@ -52,6 +52,7 @@ public class ApiController {
 		// 统计
 		for (int i = 0; i < infos.size(); i++) {
 			Info info = infos.get(i);
+			System.out.println(info);
 			String[] split = info.getNumber().split(" ");
 			for (int j = 0; j < split.length; j++) {
 				String key = split[j];
@@ -63,7 +64,10 @@ public class ApiController {
 		Iterator<Entry<String, Integer>> iterator = resultMap.entrySet().iterator();
 		List<HotNumber> hotNumbers = new ArrayList<>();
 		while (iterator.hasNext()) {
-			hotNumbers.add(new HotNumber(iterator.next().getKey(), iterator.next().getValue()));
+			Entry<String, Integer> next = iterator.next();
+			String key = next.getKey();
+			int value = next.getValue();
+			hotNumbers.add(new HotNumber(key, value));
 		}
 
 		Collections.sort(hotNumbers, new Comparator<HotNumber>() {
