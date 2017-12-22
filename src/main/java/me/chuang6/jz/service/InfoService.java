@@ -25,16 +25,19 @@ public class InfoService {
 		createCriteria.andAddtimeEqualTo(date);
 		return infoMapper.selectByExample(example);
 	}
+
 	/**
 	 * 获取历史数据
+	 * 
 	 * @param date
 	 * @param days
+	 * @param key
 	 * @return
 	 */
 	public List<Info> getHistory(Date date, Integer days) {
 		InfoExample example = new InfoExample();
 		Criteria createCriteria = example.createCriteria();
-		createCriteria.andAddtimeBetween(TimeUtils.getDate(days), date);
+		createCriteria.andAddtimeBetween(TimeUtils.getDate(date, -days), date);
 		return infoMapper.selectByExample(example);
 	}
 }
