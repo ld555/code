@@ -1,4 +1,4 @@
-package me.chuang6.jz.utils;
+package me.chuang6.jz.util;
 
 import java.io.File;
 import java.io.IOException;
