@@ -18,14 +18,21 @@ public class TimeUtils {
 		cal.add(Calendar.DATE, days);
 		return cal.getTime();
 	}
-
+	/**
+	 * 格式化Date
+	 * @param date
+	 * @return
+	 */
 	public static String getTime(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
 		return sdf.format(date);
-
 	}
-
+	
+	/**
+	 * 格式化Time
+	 * @param time
+	 * @return
+	 */
 	public static Date getDate(String time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
