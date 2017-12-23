@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.chuang6.jz.bean.Info;
 import me.chuang6.jz.service.InfoService;
+import me.chuang6.jz.util.TextUtils;
 import me.chuang6.jz.util.TimeUtils;
 
 @Controller
@@ -60,12 +61,33 @@ public class ApiController {
 			Date date2 = d2.getKey();
 			return date1.compareTo(date2);
 		}).collect(Collectors.toList());
-		
-		//Jackson解析时间除了问题，比正常时间少了一天
-		map.put("list", sortList);
+
+		map.put("list", parseData(sortList));
 		map.put("result", 0);
 		map.put("message", "获取成功");
 		return map;
 	}
 
+	private List<String[]> parseData(List<Entry<Date, List<Info>>> list) {
+
+		List<String[]> result = new ArrayList<>();
+
+		for (int i = 0; i < list.size(); i++) {
+			Map.Entry<Date, List<Info>> map = list.get(i);
+			List<Info> infoList = map.getValue();
+			String[] counts = new String[] { "0", "0", "0", "0", "0", "0", "0" };
+
+			counts[6] = TimeUtils.getTime(map.getKey());
+
+			for (int j = 0; j < infoList.size(); j++) {
+				Info info = infoList.get(j);
+				int checkNum = TextUtils.checkNum(info.getNumber());
+				int total = Integer.valueOf(counts[checkNum]);
+				counts[checkNum] = String.valueOf(++total);
+			}
+
+			result.add(counts);
+		}
+		return result;
+	}
 }

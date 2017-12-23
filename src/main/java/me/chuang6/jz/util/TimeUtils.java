@@ -19,6 +19,13 @@ public class TimeUtils {
 		return cal.getTime();
 	}
 
+	public static String getTime(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		return sdf.format(date);
+
+	}
+
 	public static Date getDate(String time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
