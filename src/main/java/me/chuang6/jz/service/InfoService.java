@@ -68,7 +68,6 @@ public class InfoService {
 		String key = TimeUtils.getTime(date);
 		Jedis jedis = new Jedis("127.0.0.1", 6379);
 		jedis.select(1);
-		jedis.expire(key, 3600 * 24 * 7);
 		String value = jedis.get(key);
 		if (value == null) {
 			// 从数据库中获取历史数据
@@ -80,6 +79,7 @@ public class InfoService {
 			result.addAll(historyList);
 			String json = JSON.toJSONString(historyList);
 			jedis.set(key, json);
+			jedis.expire(key, 3600 * 24 * 7);
 		} else {
 			System.out.println("==================命中redis缓存===================");
 			

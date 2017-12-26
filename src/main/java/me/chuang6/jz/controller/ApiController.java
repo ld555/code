@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.chuang6.jz.service.InfoService;
+import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.TimeUtils;
 
 @Controller
@@ -18,6 +19,25 @@ public class ApiController {
 
 	@Autowired
 	private InfoService infoService;
+
+	@Autowired
+	private UserService userService;
+
+	@ResponseBody
+	@RequestMapping(value = "/login")
+	public Map<String, Object> login(String openid) {
+		String uuid = userService.loginUser(openid);
+		Map<String, Object> map = new HashMap<>();
+		if (uuid != null) {
+			map.put("uuid", uuid);
+			map.put("result", 0);
+			map.put("message", "获取成功");
+		}else{
+			map.put("result", -1001);
+			map.put("message", "登录验证失败,请检查重新登录");
+		}
+		return map;
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/list")
