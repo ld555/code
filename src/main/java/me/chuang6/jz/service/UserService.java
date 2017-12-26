@@ -33,26 +33,50 @@ public class UserService {
 		userMapper.insert(user);
 	}
 
-	public String loginUser(String opidId) {
+	public String loginUser(String openid) {
 		UserExample example = new UserExample();
 		Criteria createCriteria = example.createCriteria();
-		createCriteria.andOpenidEqualTo(opidId);
+		createCriteria.andOpenidEqualTo(openid);
 		long countByExample = userMapper.countByExample(example);
 
 		// 登录成功
 		if (countByExample > 0) {
-			String uuid = AESUtils.encrypt(opidId);
+			String uuid = AESUtils.encrypt(openid);
 
 			// redis缓存
 			Jedis jedis = new Jedis("127.0.0.1", 6379);
 			jedis.select(1);
-			jedis.set(opidId, uuid);
-			jedis.expire(opidId, 3600 * 24 * 30);
+			jedis.set(openid, uuid);
+			jedis.expire(openid, 3600 * 24 * 30);
 			jedis.close();
-			
+
 			return uuid;
 		}
 		return null;
+	}
+
+	public int vaild(String openid, String uuid, String timestamp, String digest) {
+		if (uuid == null || timestamp == null || openid == null || digest == null) {
+			return -1002;// 参数错误
+		}
+		// 判断摘要信息
+		String key = "sschelper";
+		String data = openid + uuid + timestamp + key;
+		String md5Hex = DigestUtils.md5Hex(data);
+		if (!md5Hex.equals(digest)) {
+			return -1003;// 摘要错误
+		}
+		Jedis jedis = new Jedis("127.0.0.1", 6379);
+		jedis.select(1);
+		String cacheUUID = jedis.get(openid);
+		jedis.close();
+		if (cacheUUID == null) {
+			return -1004;// 登录过期
+		}
+		if (!uuid.equals(cacheUUID)) {
+			return -1005;// 有其他人顶替登录
+		}
+		return 0;
 	}
 
 }

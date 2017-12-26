@@ -81,11 +81,10 @@ public class InfoService {
 			jedis.set(key, json);
 			jedis.expire(key, 3600 * 24 * 7);
 		} else {
-			System.out.println("==================命中redis缓存===================");
-			
+
 			List<String[]> parseObject = JSON.parseObject(value, new TypeReference<List<String[]>>() {
 			});
-		
+
 			result.addAll(parseObject);
 		}
 		result.addAll(calculate(parseData(getInfos(date))));

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.chuang6.jz.service.InfoService;
 import me.chuang6.jz.service.UserService;
+import me.chuang6.jz.util.MessageUtils;
 import me.chuang6.jz.util.TimeUtils;
 
 @Controller
@@ -31,33 +32,49 @@ public class ApiController {
 		if (uuid != null) {
 			map.put("uuid", uuid);
 			map.put("result", 0);
-			map.put("message", "获取成功");
-		}else{
+			map.put("message", MessageUtils.getMsg(0));
+		} else {
 			map.put("result", -1001);
-			map.put("message", "登录验证失败,请检查重新登录");
+			map.put("message", MessageUtils.getMsg(-1001));
 		}
 		return map;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/list")
-	public Map<String, Object> list(String time) {
-		Date date = TimeUtils.getDate(time);
+	public Map<String, Object> list(String time, String openid, String uuid, String timestamp, String digest) {
 		Map<String, Object> map = new HashMap<>();
+		int result = userService.vaild(openid, uuid, timestamp, digest);
+
+		if (result != 0) {
+			map.put("result", result);
+			map.put("message", MessageUtils.getMsg(result));
+			return map;
+		}
+		Date date = TimeUtils.getDate(time);
 		map.put("list", infoService.getInfos(date));
-		map.put("result", 0);
-		map.put("message", "获取成功");
+		map.put("result", result);
+		map.put("message", MessageUtils.getMsg(result));
 		return map;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/history")
-	public Map<String, Object> history(String time, Integer days) {
-		Date date = TimeUtils.getDate(time);
+	public Map<String, Object> history(String time, Integer days, String openid, String uuid, String timestamp,
+			String digest) {
 		Map<String, Object> map = new HashMap<>();
+		int result = userService.vaild(openid, uuid, timestamp, digest);
+
+		if (result != 0) {
+			map.put("result", result);
+			map.put("message", MessageUtils.getMsg(result));
+			return map;
+		}
+		Date date = TimeUtils.getDate(time);
 		map.put("list", infoService.getHistory(date, days));
-		map.put("result", 0);
-		map.put("message", "获取成功");
+		map.put("result", result);
+		map.put("message", MessageUtils.getMsg(result));
 		return map;
 	}
+
 }
