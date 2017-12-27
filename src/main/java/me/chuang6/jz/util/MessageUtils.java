@@ -6,19 +6,22 @@ public class MessageUtils {
 		String msg = null;
 		switch (result) {
 		case -1001:
-			msg = "登录失败,请检查重新登录";
+			msg = "验证码不正确";
 			break;
 		case -1002:
-			msg = "参数错误";
+			msg = "参数不正确";
 			break;
 		case -1003:
-			msg = "摘要错误";
+			msg = "摘要不正确";
 			break;
 		case -1004:
-			msg = "登录过期,请重新登录";
+			msg = "请重新登录（原因：UUID过期）";
 			break;
 		case -1005:
-			msg = "被其他人顶替登录,请重新登录";
+			msg = "请重新登录（原因：被他人顶替登录）";
+			break;
+		case -1006:
+			msg = "接口请求超时";
 			break;
 		default:
 			msg = "处理成功";
