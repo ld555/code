@@ -59,6 +59,10 @@ public class UserService {
 		if (uuid == null || timestamp == null || openid == null || digest == null) {
 			return -1002;// 参数错误
 		}
+		int nowTime = (int) (System.currentTimeMillis() / 1000);
+		if (nowTime - Integer.valueOf(timestamp) > 3) {
+			return -1006;// 接口处理超时
+		}
 		// 判断摘要信息
 		String key = "sschelper";
 		String data = openid + uuid + timestamp + key;
