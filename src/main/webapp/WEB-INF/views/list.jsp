@@ -27,8 +27,8 @@
 					</button>
 					<h4 class="modal-title" id="myModalLabel">信息添加</h4>
 				</div>
-				<form id="modal_form" class="form-horizontal" action="${pageContext.request.contextPath }/user/add"
-					method="post">
+				<form id="modal_form" class="form-horizontal"
+					action="${pageContext.request.contextPath }/user/add" method="post">
 					<div class="modal-body">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">姓名</label>
@@ -96,7 +96,7 @@
 						<th>QQ</th>
 						<th>微信</th>
 						<th>电话</th>
-						<th>KEY</th>
+						<th>序列码</th>
 						<th>注册时间</th>
 					</tr>
 				</thead>
@@ -104,11 +104,16 @@
 					<c:forEach items="${requestScope.pageInfo.list }" var="item">
 						<tr>
 							<td>${item.id }</td>
-							<td>${item.realname }</td>
-							<td>${item.email }</td>
-							<td>${item.qq }</td>
-							<td>${item.wechat }</td>
-							<td>${item.telephone }</td>
+							<td><c:if test="${empty item.realname}">无</c:if> <c:if
+									test="${!empty item.realname}">${item.realname}</c:if></td>
+							<td><c:if test="${empty item.email}">无</c:if> <c:if
+									test="${!empty item.email}">${item.email}</c:if></td>
+							<td><c:if test="${empty item.qq}">无</c:if> <c:if
+									test="${!empty item.qq}">${item.qq}</c:if></td>
+							<td><c:if test="${empty item.wechat}">无</c:if> <c:if
+									test="${!empty item.wechat}">${item.wechat}</c:if></td>
+							<td><c:if test="${empty item.telephone}">无</c:if> <c:if
+									test="${!empty item.telephone}">${item.telephone}</c:if></td>
 							<td>${item.openid }</td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
 									value="${item.addtime }"></fmt:formatDate></td>
