@@ -42,9 +42,9 @@ public class ApiController {
 
 	@ResponseBody
 	@RequestMapping(value = "/list")
-	public Map<String, Object> list(String time, String openid, String uuid, String timestamp, String digest) {
+	public Map<String, Object> list(String time, String uuid, String timestamp, String digest) {
 		Map<String, Object> map = new HashMap<>();
-		int result = userService.vaild(openid, uuid, timestamp, digest);
+		int result = userService.vaild(uuid, timestamp, digest);
 
 		if (result != 0) {
 			map.put("result", result);
@@ -60,10 +60,9 @@ public class ApiController {
 
 	@ResponseBody
 	@RequestMapping(value = "/history")
-	public Map<String, Object> history(String time, Integer days, String openid, String uuid, String timestamp,
-			String digest) {
+	public Map<String, Object> history(String time, Integer days, String uuid, String timestamp, String digest) {
 		Map<String, Object> map = new HashMap<>();
-		int result = userService.vaild(openid, uuid, timestamp, digest);
+		int result = userService.vaild(uuid, timestamp, digest);
 
 		if (result != 0) {
 			map.put("result", result);

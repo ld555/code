@@ -2,6 +2,7 @@ package me.chuang6.jz.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class UserService {
 
 		// 登录成功
 		if (countByExample > 0) {
-			String uuid = AESUtils.encrypt(openid);
+			String uuid = AESUtils.encrypt(openid + "#" + new Random().nextInt(Integer.MAX_VALUE));
 
 			// redis缓存
 			Jedis jedis = new Jedis("127.0.0.1", 6379);
@@ -55,8 +56,8 @@ public class UserService {
 		return null;
 	}
 
-	public int vaild(String openid, String uuid, String timestamp, String digest) {
-		if (uuid == null || timestamp == null || openid == null || digest == null) {
+	public int vaild(String uuid, String timestamp, String digest) {
+		if (uuid == null || timestamp == null || digest == null) {
 			return -1002;// 参数错误
 		}
 		int nowTime = (int) (System.currentTimeMillis() / 1000);
@@ -65,11 +66,12 @@ public class UserService {
 		}
 		// 判断摘要信息
 		String key = "sschelper";
-		String data = openid + uuid + timestamp + key;
+		String data = uuid + timestamp + key;
 		String md5Hex = DigestUtils.md5Hex(data);
 		if (!md5Hex.equals(digest)) {
 			return -1003;// 摘要错误
 		}
+		String openid = AESUtils.decrypt(uuid).split("#")[0];
 		Jedis jedis = new Jedis("127.0.0.1", 6379);
 		jedis.select(1);
 		String cacheUUID = jedis.get(openid);
