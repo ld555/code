@@ -60,7 +60,7 @@ public class ApiController {
 
 	@ResponseBody
 	@RequestMapping(value = "/history")
-	public Map<String, Object> history(String time, Integer days, String uuid, String timestamp, String digest) {
+	public Map<String, Object> history(String time, String uuid, String timestamp, String digest) {
 		Map<String, Object> map = new HashMap<>();
 		int result = userService.vaild(uuid, timestamp, digest);
 
@@ -70,7 +70,7 @@ public class ApiController {
 			return map;
 		}
 		Date date = TimeUtils.getDate(time);
-		map.put("list", infoService.getHistory(date, days));
+		map.put("list", infoService.getHistory(date, 30));//获取30天的数据
 		map.put("result", result);
 		map.put("message", MessageUtils.getMsg(result));
 		return map;
