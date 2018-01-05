@@ -29,6 +29,16 @@ public class TimeUtils {
 	}
 	
 	/**
+	 * 格式化Date
+	 * @param date
+	 * @return
+	 */
+	public static String getTime(Date date,String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(date);
+	}
+	
+	/**
 	 * 格式化Time
 	 * @param time
 	 * @return
