@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.chuang6.jz.dao.InfoMapper">
+  <cache></cache>
   <resultMap id="BaseResultMap" type="me.chuang6.jz.bean.Info">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="periods" jdbcType="INTEGER" property="periods" />
