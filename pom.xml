@@ -163,4 +163,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.11.RELEASE</spring.version>
 	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<configuration>
+					<port>8080</port>
+					<path>/caipiao</path>
+					<url>http://server2:8080/manager/text</url>
+					<username>liuchuang</username>
+					<password>liu@chuang</password>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
