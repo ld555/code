@@ -14,12 +14,16 @@ import me.chuang6.jz.bean.UserExample.Criteria;
 import me.chuang6.jz.dao.UserMapper;
 import me.chuang6.jz.util.AESUtils;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @Service
 public class UserService {
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private JedisPool jedisPool;
 
 	public List<User> getList() {
 		UserExample example = new UserExample();
@@ -45,7 +49,7 @@ public class UserService {
 			String uuid = AESUtils.encrypt(openid + "#" + new Random().nextInt(Integer.MAX_VALUE));
 
 			// redis缓存
-			Jedis jedis = new Jedis("127.0.0.1", 6379);
+			Jedis jedis = jedisPool.getResource();
 			jedis.select(1);
 			jedis.set(openid, uuid);
 			jedis.expire(openid, 3600 * 24 * 30);
@@ -72,7 +76,7 @@ public class UserService {
 			return -1003;// 摘要错误
 		}
 		String openid = AESUtils.decrypt(uuid).split("#")[0];
-		Jedis jedis = new Jedis("127.0.0.1", 6379);
+		Jedis jedis = jedisPool.getResource();
 		jedis.select(1);
 		String cacheUUID = jedis.get(openid);
 		jedis.close();

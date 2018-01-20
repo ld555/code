@@ -21,12 +21,16 @@ import me.chuang6.jz.dao.InfoMapper;
 import me.chuang6.jz.util.TextUtils;
 import me.chuang6.jz.util.TimeUtils;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @Service
 public class InfoService {
 
 	@Autowired
 	private InfoMapper infoMapper;
+	
+	@Autowired
+	private JedisPool jedisPool;
 
 	/**
 	 * 获取某日的数据
@@ -66,7 +70,7 @@ public class InfoService {
 	public List<String[]> getHistory(Date date, Integer days) {
 		List<String[]> result = new ArrayList<>();
 		String key = TimeUtils.getTime(date);
-		Jedis jedis = new Jedis("127.0.0.1", 6379);
+		Jedis jedis = jedisPool.getResource();
 		jedis.select(1);
 		String value = jedis.get(key);
 		if (value == null) {
