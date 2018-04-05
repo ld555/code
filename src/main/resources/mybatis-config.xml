@@ -5,14 +5,14 @@
 <configuration>
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
-		<setting name="logImpl" value="STDOUT_LOGGING" />
+		<setting name="logImpl" value="LOG4J" />
 		<setting name="cacheEnabled" value="true" />
 	</settings>
 
 	<typeAliases>
 		<package name="me.chuang6.jz.bean" />
 	</typeAliases>
-	
+
 	<plugins>
 		<plugin interceptor="com.github.pagehelper.PageInterceptor">
 			<!--分页参数合理化 -->
