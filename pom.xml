@@ -6,6 +6,12 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
 		<dependency>
 			<groupId>com.mi.mipush</groupId>
 			<artifactId>mipush</artifactId>
@@ -163,7 +169,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.11.RELEASE</spring.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>

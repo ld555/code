@@ -42,7 +42,8 @@
 		<!--<table tableName="jz_exchange" domainObjectName="Exchange"></table> -->
 		<!--<table tableName="jz_field" domainObjectName="Field"></table> -->
 		<!--<table tableName="jz_user" domainObjectName="User"></table> -->
-		<table tableName="t_user" domainObjectName="User"></table>
+		<!-- <table tableName="t_user" domainObjectName="User"></table> -->
 		<!-- <table tableName="jz_info" domainObjectName="Info"></table> -->
+		<table tableName="t_notice" domainObjectName="Notice"></table>
 	</context>
 </generatorConfiguration>

@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -21,8 +22,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import me.chuang6.jz.bean.Info;
 import me.chuang6.jz.bean.InfoExample;
 import me.chuang6.jz.bean.InfoExample.Criteria;
+import me.chuang6.jz.bean.Notice;
 import me.chuang6.jz.dao.InfoMapper;
+import me.chuang6.jz.dao.NoticeMapper;
 import me.chuang6.jz.util.PushUtils;
+import me.chuang6.jz.util.TextUtils;
 import me.chuang6.jz.util.TimeUtils;
 
 public class MyListener implements ServletContextListener {
@@ -30,12 +34,14 @@ public class MyListener implements ServletContextListener {
 	private static final String URL = "http://caipiao.163.com/award/cqssc/%s.html";
 
 	private InfoMapper infoMapper;
+	private NoticeMapper noticeMapper;
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context = sce.getServletContext();
 		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(context);
 		infoMapper = ctx.getBean(InfoMapper.class);
+		noticeMapper = ctx.getBean(NoticeMapper.class);
 		Timer timer = new Timer();
 		Timer timer2 = new Timer();
 		timer.schedule(new TimerTask() {
@@ -107,6 +113,31 @@ public class MyListener implements ServletContextListener {
 					// 插入
 					info.setAddtime(date);
 					infoMapper.insert(info);
+					// 获取当前所有数据，看看是否报警
+					try {
+						InfoExample example = new InfoExample();
+						example.setOrderByClause("periods desc");
+						Criteria createCriteria = example.createCriteria();
+						createCriteria.andAddtimeEqualTo(date);
+						List<Info> list = infoMapper.selectByExample(example);
+						String notice = TextUtils.notice(list);
+						System.out.println("========================MyListener is running notice is" + notice
+								+ "=======================");
+						if (!StringUtils.isEmpty(notice)) {
+							// 插入报警数据
+							Notice objNotice = new Notice();
+							objNotice.setNotice(notice);
+							objNotice.setNumber(info.getNumber().replace(" ", ""));
+							objNotice.setPeriods(info.getPeriods());
+							objNotice.setAddtime(new Date());
+							objNotice.setType(TextUtils.checkType(info.getNumber()));
+							objNotice.setSource("重庆");
+							noticeMapper.insert(objNotice);
+							// 发送报警短信
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					PushUtils.broadcastAll("时时彩助手", info.toString(), info.toString(), 0);
 
 				} else {

@@ -2,10 +2,85 @@ package me.chuang6.jz.util;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import me.chuang6.jz.bean.Info;
+
 public class TextUtils {
+
+	/**
+	 * 报警逻辑 1、60有7把不出 2、120有15把不出 3、30有42把不出 4，30和豹子同时有19把不出
+	 */
+	public static String notice(List<Info> list) {
+		int s120 = 0;
+		int s60 = 0;
+		int s30 = 0;
+		int sbz = 0;// 豹子
+		int count = 0;
+		for (int i = list.size() - 1; i >= 0; i--) {
+			count++;
+			if (count == 43)
+				break;
+			Info info = list.get(i);
+			String number = info.getNumber();
+			int result = checkNum(number);
+			if (count <= 7 && result == 1) {
+				s60++;
+			}
+			if (count <= 15 && result == 0) {
+				s120++;
+			}
+			if (count <= 42 && result == 2) {
+				s30++;
+			}
+			if (count <= 19 && result == 3) {
+				sbz++;
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		if (s120 == 0) {
+			sb.append("120连续15期没有出现,");
+		}
+		if (s60 == 0) {
+			sb.append("60连续7期没有出现,");
+		}
+		if (s30 == 0) {
+			sb.append("30连续42期没有出现,");
+		}
+		if (s30 == 0 && sbz == 0) {
+			sb.append("30和豹子同时连续19期没有出现");
+		}
+		return sb.toString();
+	}
+
+	public static String checkType(String number) {
+		int input = checkNum(number);
+		String type = null;
+		switch (input) {
+		case 0:
+			type = "120";
+			break;
+		case 1:
+			type = "60";
+			break;
+		case 2:
+			type = "30";
+			break;
+		case 3:
+			type = "豹子";
+			break;
+		case 4:
+			type = "四连";
+			break;
+		case 5:
+			type = "五连";
+			break;
+		}
+		return type;
+	}
+
 	/**
 	 * 检查号码是什么类型
 	 * 
@@ -46,7 +121,7 @@ public class TextUtils {
 				}
 			}
 
-			if (value == 3) {//如果value中有等于3的 那就说明是豹子
+			if (value == 3) {// 如果value中有等于3的 那就说明是豹子
 				result = 3;
 			} else {
 				result = 2;
@@ -91,7 +166,7 @@ public class TextUtils {
 		// }
 		//
 		// }
-//		System.out.println(number + "======" + result);
+		// System.out.println(number + "======" + result);
 		return result;
 	}
 }
