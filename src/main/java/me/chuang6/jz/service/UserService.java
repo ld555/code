@@ -50,9 +50,9 @@ public class UserService {
 
 			// redis缓存
 			Jedis jedis = jedisPool.getResource();
-			jedis.select(1);
+			jedis.select(2);
 			jedis.set(openid, uuid);
-			jedis.expire(openid, 3600 * 24 * 30);
+//			jedis.expire(openid, 3600 * 24 * 30);
 			jedis.close();
 
 			return uuid;
@@ -65,7 +65,7 @@ public class UserService {
 			return -1002;// 参数错误
 		}
 		int nowTime = (int) (System.currentTimeMillis() / 1000);
-		if (nowTime - Integer.valueOf(timestamp) > 3) {
+		if (nowTime - Integer.valueOf(timestamp) > 10) {
 			return -1006;// 接口处理超时
 		}
 		// 判断摘要信息
@@ -77,7 +77,7 @@ public class UserService {
 		}
 		String openid = AESUtils.decrypt(uuid).split("#")[0];
 		Jedis jedis = jedisPool.getResource();
-		jedis.select(1);
+		jedis.select(2);
 		String cacheUUID = jedis.get(openid);
 		jedis.close();
 		if (cacheUUID == null) {
