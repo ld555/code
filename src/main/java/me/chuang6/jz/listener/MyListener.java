@@ -13,6 +13,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -30,6 +31,7 @@ import me.chuang6.jz.util.TextUtils;
 import me.chuang6.jz.util.TimeUtils;
 
 public class MyListener implements ServletContextListener {
+	private  Logger logger = Logger.getLogger(MyListener.class);
 	private static final int PERIOD_TIME = 1000 * 30;
 	private static final String URL = "http://caipiao.163.com/award/cqssc/%s.html";
 
@@ -38,6 +40,7 @@ public class MyListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+		logger.info("监听器启动");
 		ServletContext context = sce.getServletContext();
 		ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(context);
 		infoMapper = ctx.getBean(InfoMapper.class);
@@ -121,8 +124,7 @@ public class MyListener implements ServletContextListener {
 						createCriteria.andAddtimeEqualTo(date);
 						List<Info> list = infoMapper.selectByExample(example);
 						String notice = TextUtils.notice(list);
-						System.out.println("========================MyListener is running notice is" + notice
-								+ "=======================");
+						logger.info("报警数据："+notice);
 						if (!StringUtils.isEmpty(notice)) {
 							// 插入报警数据
 							Notice objNotice = new Notice();
@@ -158,7 +160,7 @@ public class MyListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		System.out.println("==================contextDestroyed");
+		logger.info("监听器销毁");
 	}
 
 }
