@@ -72,8 +72,8 @@ public class InfoService {
      */
     public List<String[]> getHistory(Date date, Integer days) {
         List<String[]> result = new ArrayList<>();
-        String key = TimeUtils.getTime(date);
-        String value = jedisClient.get(REDIS_CAIPIAO_HISTORY_INFO + ":" + key);
+        String key = REDIS_CAIPIAO_HISTORY_INFO + ":" + TimeUtils.getTime(date);
+        String value = jedisClient.get(key);
         if (value == null) {
             // 从数据库中获取历史数据
             List<Info> historyData = getInfos(date, days);
@@ -83,7 +83,7 @@ public class InfoService {
             List<String[]> historyList = calculate(historyParseData);
             result.addAll(historyList);
             String json = JSON.toJSONString(historyList);
-            jedisClient.set(REDIS_CAIPIAO_HISTORY_INFO + ":" + key, json);
+            jedisClient.set(key, json);
             jedisClient.expire(key, 3600 * 24 * 7);
         } else {
 
