@@ -185,10 +185,18 @@
 	</properties>
 
 	<build>
+		<resources>
+			<!--配置文件路径 -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
 				<configuration>
 					<port>8080</port>
 					<path>/caipiao</path>
@@ -199,4 +207,26 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
+				<jdbc.jdbcUrl>jdbc:mysql://server2:3306/caipiao_dev?characterEncoding=UTF-8</jdbc.jdbcUrl>
+				<jdbc.user>caipiao_dev</jdbc.user>
+				<jdbc.password>m7bRAhkBFHS2Wdzi</jdbc.password>
+				<api_ttl>99999999</api_ttl>
+			</properties>
+		</profile>
+		<profile>
+			<id>pro</id>
+			<properties>
+				<jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
+				<jdbc.jdbcUrl>jdbc:mysql://localhost:3306/caipiao?characterEncoding=UTF-8</jdbc.jdbcUrl>
+				<jdbc.user>caipiao</jdbc.user>
+				<jdbc.password>NwakFmdbJT</jdbc.password>
+				<api_ttl>10</api_ttl>
+			</properties>
+		</profile>
+	</profiles>
 </project>
