@@ -381,6 +381,66 @@ public class InfoExample {
             addCriterionForJDBCDate("addtime not between", value1, value2, "addtime");
             return (Criteria) this;
         }
+
+        public Criteria andSourceIsNull() {
+            addCriterion("source is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIsNotNull() {
+            addCriterion("source is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceEqualTo(Integer value) {
+            addCriterion("source =", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceNotEqualTo(Integer value) {
+            addCriterion("source <>", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceGreaterThan(Integer value) {
+            addCriterion("source >", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("source >=", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceLessThan(Integer value) {
+            addCriterion("source <", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceLessThanOrEqualTo(Integer value) {
+            addCriterion("source <=", value, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceIn(List<Integer> values) {
+            addCriterion("source in", values, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceNotIn(List<Integer> values) {
+            addCriterion("source not in", values, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceBetween(Integer value1, Integer value2) {
+            addCriterion("source between", value1, value2, "source");
+            return (Criteria) this;
+        }
+
+        public Criteria andSourceNotBetween(Integer value1, Integer value2) {
+            addCriterion("source not between", value1, value2, "source");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

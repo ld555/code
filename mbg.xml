@@ -10,8 +10,8 @@
 		</commentGenerator>
 		<!-- 配置数据库连接 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://server2:3306/caipiao" userId="caipiao"
-			password="NwakFmdbJT">
+			connectionURL="jdbc:mysql://server2:3306/caipiao_dev" userId="caipiao_dev"
+			password="m7bRAhkBFHS2Wdzi">
 		</jdbcConnection>
 
 		<javaTypeResolver>
@@ -44,6 +44,6 @@
 		<!--<table tableName="jz_user" domainObjectName="User"></table> -->
 		<!-- <table tableName="t_user" domainObjectName="User"></table> -->
 		<!-- <table tableName="jz_info" domainObjectName="Info"></table> -->
-		<table tableName="t_notice" domainObjectName="Notice"></table>
+		<table tableName="t_info" domainObjectName="Info"></table>
 	</context>
 </generatorConfiguration>

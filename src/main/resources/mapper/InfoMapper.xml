@@ -7,6 +7,7 @@
     <result column="periods" jdbcType="INTEGER" property="periods" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="addtime" jdbcType="DATE" property="addtime" />
+    <result column="source" jdbcType="INTEGER" property="source" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, periods, number, addtime
+    id, periods, number, addtime, source
   </sql>
   <select id="selectByExample" parameterType="me.chuang6.jz.bean.InfoExample" resultMap="BaseResultMap">
     select
@@ -101,9 +102,9 @@
   </delete>
   <insert id="insert" parameterType="me.chuang6.jz.bean.Info">
     insert into t_info (id, periods, number, 
-      addtime)
+      addtime, source)
     values (#{id,jdbcType=INTEGER}, #{periods,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
-      #{addtime,jdbcType=DATE})
+      #{addtime,jdbcType=DATE}, #{source,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="me.chuang6.jz.bean.Info">
     insert into t_info
@@ -120,6 +121,9 @@
       <if test="addtime != null">
         addtime,
       </if>
+      <if test="source != null">
+        source,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -133,6 +137,9 @@
       </if>
       <if test="addtime != null">
         #{addtime,jdbcType=DATE},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -157,6 +164,9 @@
       <if test="record.addtime != null">
         addtime = #{record.addtime,jdbcType=DATE},
       </if>
+      <if test="record.source != null">
+        source = #{record.source,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -167,7 +177,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       periods = #{record.periods,jdbcType=INTEGER},
       number = #{record.number,jdbcType=VARCHAR},
-      addtime = #{record.addtime,jdbcType=DATE}
+      addtime = #{record.addtime,jdbcType=DATE},
+      source = #{record.source,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -184,6 +195,9 @@
       <if test="addtime != null">
         addtime = #{addtime,jdbcType=DATE},
       </if>
+      <if test="source != null">
+        source = #{source,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -191,7 +205,8 @@
     update t_info
     set periods = #{periods,jdbcType=INTEGER},
       number = #{number,jdbcType=VARCHAR},
-      addtime = #{addtime,jdbcType=DATE}
+      addtime = #{addtime,jdbcType=DATE},
+      source = #{source,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

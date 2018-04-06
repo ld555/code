@@ -12,6 +12,8 @@ public class Info implements Serializable {
 
 	private Date addtime;
 
+	private Integer source;
+
 	public Info(int periods, String number) {
 		this.periods = periods;
 		this.number = number;
@@ -19,6 +21,14 @@ public class Info implements Serializable {
 
 	public Info() {
 
+	}
+
+	public Integer getSource() {
+		return source;
+	}
+
+	public void setSource(Integer source) {
+		this.source = source;
 	}
 
 	public Integer getId() {

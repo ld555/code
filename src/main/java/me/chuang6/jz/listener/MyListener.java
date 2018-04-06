@@ -115,6 +115,7 @@ public class MyListener implements ServletContextListener {
 				if (getCount(info.getPeriods(), date) == 0) {
 					// 插入
 					info.setAddtime(date);
+					info.setSource(0);
 					infoMapper.insert(info);
 					// 获取当前所有数据，看看是否报警
 					try {

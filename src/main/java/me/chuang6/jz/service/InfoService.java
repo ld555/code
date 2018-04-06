@@ -41,11 +41,18 @@ public class InfoService {
      * @param date
      * @return
      */
-    public List<Info> getInfos(Date date) {
+    public List<Info> getInfos(Date date, String source) {
         InfoExample example = new InfoExample();
         example.setOrderByClause("periods asc");
         Criteria createCriteria = example.createCriteria();
         createCriteria.andAddtimeEqualTo(date);
+        if ("chongqing".equals(source)) {
+            createCriteria.andSourceEqualTo(0);
+        } else if ("xinjiang".equals(source)) {
+            createCriteria.andSourceEqualTo(1);
+        } else {
+            createCriteria.andSourceEqualTo(0);
+        }
         return infoMapper.selectByExample(example);
     }
 
@@ -56,10 +63,15 @@ public class InfoService {
      * @param days
      * @return
      */
-    public List<Info> getInfos(Date date, Integer days) {
+    public List<Info> getInfos(Date date, Integer days, String source) {
         InfoExample example = new InfoExample();
         Criteria createCriteria = example.createCriteria();
         createCriteria.andAddtimeBetween(TimeUtils.getDate(date, -days), TimeUtils.getDate(date, -1));
+        if ("chongqing".equals(source)) {
+            createCriteria.andSourceEqualTo(0);
+        } else if ("xinjiang".equals(source)) {
+            createCriteria.andSourceEqualTo(1);
+        }
         return infoMapper.selectByExample(example);
     }
 
@@ -70,13 +82,13 @@ public class InfoService {
      * @param days
      * @return
      */
-    public List<String[]> getHistory(Date date, Integer days) {
+    public List<String[]> getHistory(Date date, Integer days, String source) {
         List<String[]> result = new ArrayList<>();
-        String key = REDIS_CAIPIAO_HISTORY_INFO + ":" + TimeUtils.getTime(date);
+        String key = REDIS_CAIPIAO_HISTORY_INFO + ":" + TimeUtils.getTime(date) + ":" + source;
         String value = jedisClient.get(key);
         if (value == null) {
             // 从数据库中获取历史数据
-            List<Info> historyData = getInfos(date, days);
+            List<Info> historyData = getInfos(date, days, source);
             // 格式化数据
             List<Entry<Date, List<Info>>> historyParseData = parseData(historyData);
             // 计算数量
@@ -92,7 +104,7 @@ public class InfoService {
 
             result.addAll(parseObject);
         }
-        result.addAll(calculate(parseData(getInfos(date))));
+        result.addAll(calculate(parseData(getInfos(date, source))));
         return result;
     }
 
