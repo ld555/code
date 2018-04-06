@@ -14,6 +14,7 @@ public class TextUtils {
      * 报警逻辑 1、60有7把不出 2、120有15把不出 3、30有42把不出 4，30和豹子同时有19把不出
      */
     public static String notice(List<Info> list) {
+        if (list.size() < 7) return null;
         int s120 = 0;
         int s60 = 0;
         int s30 = 0;
@@ -39,16 +40,16 @@ public class TextUtils {
             }
         }
         StringBuilder sb = new StringBuilder();
-        if (s120 == 0) {
-            sb.append("<120>连续15期没有出现，");
+        if (s120 == 0 && list.size() >= 15) {
+            sb.append("<120>连续15期没有出现 ");
         }
-        if (s60 == 0) {
-            sb.append("<60>连续7期没有出现，");
+        if (s60 == 0 && list.size() >= 7) {
+            sb.append("<60>连续7期没有出现 ");
         }
-        if (s30 == 0) {
-            sb.append("<30>连续42期没有出现，");
+        if (s30 == 0 && list.size() >= 42) {
+            sb.append("<30>连续42期没有出现 ");
         }
-        if (s30 == 0 && sbz == 0) {
+        if (s30 == 0 && sbz == 0 && list.size() >= 19) {
             sb.append("<30>和<豹子>同时连续19期没有出现");
         }
         return sb.toString();
