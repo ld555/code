@@ -505,62 +505,52 @@ public class NoticeExample {
             return (Criteria) this;
         }
 
-        public Criteria andSourceEqualTo(String value) {
+        public Criteria andSourceEqualTo(Integer value) {
             addCriterion("source =", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotEqualTo(String value) {
+        public Criteria andSourceNotEqualTo(Integer value) {
             addCriterion("source <>", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceGreaterThan(String value) {
+        public Criteria andSourceGreaterThan(Integer value) {
             addCriterion("source >", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceGreaterThanOrEqualTo(String value) {
+        public Criteria andSourceGreaterThanOrEqualTo(Integer value) {
             addCriterion("source >=", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLessThan(String value) {
+        public Criteria andSourceLessThan(Integer value) {
             addCriterion("source <", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLessThanOrEqualTo(String value) {
+        public Criteria andSourceLessThanOrEqualTo(Integer value) {
             addCriterion("source <=", value, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceLike(String value) {
-            addCriterion("source like", value, "source");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceNotLike(String value) {
-            addCriterion("source not like", value, "source");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIn(List<String> values) {
+        public Criteria andSourceIn(List<Integer> values) {
             addCriterion("source in", values, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotIn(List<String> values) {
+        public Criteria andSourceNotIn(List<Integer> values) {
             addCriterion("source not in", values, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceBetween(String value1, String value2) {
+        public Criteria andSourceBetween(Integer value1, Integer value2) {
             addCriterion("source between", value1, value2, "source");
             return (Criteria) this;
         }
 
-        public Criteria andSourceNotBetween(String value1, String value2) {
+        public Criteria andSourceNotBetween(Integer value1, Integer value2) {
             addCriterion("source not between", value1, value2, "source");
             return (Criteria) this;
         }

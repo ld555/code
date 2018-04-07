@@ -12,14 +12,15 @@ import me.chuang6.jz.dao.NoticeMapper;
 @Service
 public class NoticeService {
 
-	@Autowired
-	private NoticeMapper noticeMapper;
-	
-	
-	public List<Notice> getNoticeList(){
-		NoticeExample example = new NoticeExample();
-		example.setOrderByClause("id desc");
-		return noticeMapper.selectByExample(example);
-	}
-	
+    @Autowired
+    private NoticeMapper noticeMapper;
+
+
+    public List<Notice> getNoticeList(Integer source) {
+        NoticeExample example = new NoticeExample();
+        example.setOrderByClause("id desc");
+        example.createCriteria().andSourceEqualTo(source);
+        return noticeMapper.selectByExample(example);
+    }
+
 }

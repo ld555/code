@@ -143,19 +143,19 @@ public class MyListener implements ServletContextListener {
                         objNotice.setPeriods(info.getPeriods());
                         objNotice.setAddtime(new Date());
                         objNotice.setType(TextUtils.checkType(info.getNumber()));
-                        objNotice.setSource("新疆");
+                        objNotice.setSource(1);
                         try {
                             noticeMapper.insert(objNotice);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         //TODO 发送报警短信
-                        PushUtils.broadcastAll("报警", notice, notice, 1);
+                        PushUtils.broadcastAll("报警", notice, notice, 2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                PushUtils.broadcastAll("时时彩助手", info.toString(), info.toString(), 0);
+                PushUtils.broadcastAll("时时彩助手", info.toString(), info.toString(), 3);
 
             } else {
                 break;// 倒着判断，只要有一个存在，那么前面的肯定也都存在 所以直接跳出循环
@@ -249,7 +249,7 @@ public class MyListener implements ServletContextListener {
                             objNotice.setPeriods(info.getPeriods());
                             objNotice.setAddtime(new Date());
                             objNotice.setType(TextUtils.checkType(info.getNumber()));
-                            objNotice.setSource("重庆");
+                            objNotice.setSource(0);
                             try {
                                 noticeMapper.insert(objNotice);
                             } catch (Exception e) {

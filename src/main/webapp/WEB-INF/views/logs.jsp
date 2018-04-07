@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -26,8 +27,8 @@
 						<th>类型</th> -->
 
 						<th>时间</th>
+						<th>号码</th>
 						<th>日志</th>
-						<th>来源</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -37,10 +38,10 @@
 							<td>${item.number}</td>
 							<td>${item.type }</td> --%>
 
-							<td><fmt:formatDate pattern="yyyyMMdd"
-									value="${item.addtime }"></fmt:formatDate></td>
+							<td><fmt:formatDate pattern="MMdd"
+									value="${item.addtime }"></fmt:formatDate>#${item.periods}</td>
+							<td>${fn:replace(item.number, " ", "")}  </td>
 							<td>${item.notice}</td>
-							<td>${item.source}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

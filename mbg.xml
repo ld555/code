@@ -44,6 +44,6 @@
 		<!--<table tableName="jz_user" domainObjectName="User"></table> -->
 		<!-- <table tableName="t_user" domainObjectName="User"></table> -->
 		<!-- <table tableName="jz_info" domainObjectName="Info"></table> -->
-		<table tableName="t_info" domainObjectName="Info"></table>
+		<table tableName="t_notice" domainObjectName="Notice"></table>
 	</context>
 </generatorConfiguration>

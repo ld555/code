@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.chuang6.jz.dao.NoticeMapper">
+  <cache></cache>
   <resultMap id="BaseResultMap" type="me.chuang6.jz.bean.Notice">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="periods" jdbcType="INTEGER" property="periods" />
@@ -8,7 +9,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="notice" jdbcType="VARCHAR" property="notice" />
     <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="source" jdbcType="INTEGER" property="source" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -107,7 +108,7 @@
       source)
     values (#{id,jdbcType=INTEGER}, #{periods,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{notice,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
-      #{source,jdbcType=VARCHAR})
+      #{source,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="me.chuang6.jz.bean.Notice">
     insert into t_notice
@@ -154,7 +155,7 @@
         #{addtime,jdbcType=TIMESTAMP},
       </if>
       <if test="source != null">
-        #{source,jdbcType=VARCHAR},
+        #{source,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -186,7 +187,7 @@
         addtime = #{record.addtime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.source != null">
-        source = #{record.source,jdbcType=VARCHAR},
+        source = #{record.source,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -201,7 +202,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       notice = #{record.notice,jdbcType=VARCHAR},
       addtime = #{record.addtime,jdbcType=TIMESTAMP},
-      source = #{record.source,jdbcType=VARCHAR}
+      source = #{record.source,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -225,7 +226,7 @@
         addtime = #{addtime,jdbcType=TIMESTAMP},
       </if>
       <if test="source != null">
-        source = #{source,jdbcType=VARCHAR},
+        source = #{source,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -237,7 +238,7 @@
       type = #{type,jdbcType=VARCHAR},
       notice = #{notice,jdbcType=VARCHAR},
       addtime = #{addtime,jdbcType=TIMESTAMP},
-      source = #{source,jdbcType=VARCHAR}
+      source = #{source,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

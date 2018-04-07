@@ -15,7 +15,7 @@ public class Notice {
 
     private Date addtime;
 
-    private String source;
+    private Integer source;
 
     public Integer getId() {
         return id;
@@ -65,11 +65,11 @@ public class Notice {
         this.addtime = addtime;
     }
 
-    public String getSource() {
+    public Integer getSource() {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source == null ? null : source.trim();
+    public void setSource(Integer source) {
+        this.source = source;
     }
 }

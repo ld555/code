@@ -38,10 +38,10 @@ public class ApiController {
     private NoticeService noticeService;
 
     @RequestMapping(value = "logs")
-    public String log(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request) {
+    public String log(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request,@RequestParam(value = "source",defaultValue = "0") Integer source) {
         try {
             PageHelper.startPage(pn, 10);
-            List<Notice> list = noticeService.getNoticeList();
+            List<Notice> list = noticeService.getNoticeList(source);
             PageInfo<Notice> pageInfo = new PageInfo<Notice>(list, 10);
             request.setAttribute("pageInfo", pageInfo);
             return "logs";
