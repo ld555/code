@@ -1,8 +1,9 @@
 package me.chuang6.jz.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Notice {
+public class Notice implements Serializable{
     private Integer id;
 
     private Integer periods;
