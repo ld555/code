@@ -47,6 +47,13 @@ public class MyListener implements ServletContextListener {
         noticeMapper = ctx.getBean(NoticeMapper.class);
         Timer timer = new Timer();
         Timer timer2 = new Timer();
+        Timer timer3 = new Timer();
+        timer3.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getData2();
+            }
+        }, 0, PERIOD_TIME);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -59,6 +66,102 @@ public class MyListener implements ServletContextListener {
                 getData(TimeUtils.getDate(new Date(), -1));
             }
         }, 0, PERIOD_TIME);
+    }
+
+    private void getData2() {
+        Document doc = null;
+        try {
+            String url = String.format("http://www.xjflcp.com/game/sscIndex");
+            doc = Jsoup.connect(url).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        if (doc != null) {
+            Elements elements = doc.select("tbody");
+            List<Info> list = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+
+                Elements trs = elements.get(i).select("tr");
+
+                for (int j = 1; j < trs.size(); j++) {
+                    String td1 = trs.get(j).select("td").get(0).text();//期号
+                    String td2 = trs.get(j).select("td").get(1).text();//号码
+                    if (!"--".equals(td1)) {
+                        String td1_result = td1.substring(8, 10);
+                        String td2_result = td2.replace(",", " ");
+                        Info info = new Info(Integer.valueOf(td1_result), td2_result);
+                        list.add(info);
+                    }
+                }
+            }
+            Collections.sort(list, new Comparator<Info>() {
+                @Override
+                public int compare(Info info1, Info info2) {
+                    return info1.getPeriods().compareTo(info2.getPeriods());
+                }
+            });
+            insert(list);
+        }
+    }
+
+    private void insert(List<Info> infoList) {
+
+        for (int i = infoList.size() - 1; i >= 0; i--) {
+            Info info = infoList.get(i);
+            if (getCount(info.getPeriods(), new Date(), 1) == 0) {
+                info.setSource(1);
+                info.setAddtime(new Date());
+                try {
+                    infoMapper.insert(info);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // 获取当前所有数据，看看是否报警
+                try {
+                    InfoExample example = new InfoExample();
+                    example.setOrderByClause("periods asc");
+                    Criteria createCriteria = example.createCriteria();
+                    createCriteria.andAddtimeEqualTo(new Date());
+                    createCriteria.andSourceEqualTo(1);
+                    List<Info> list = null;
+                    try {
+                        list = infoMapper.selectByExample(example);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    String notice = TextUtils.notice(list);
+
+                    if (!StringUtils.isEmpty(notice)) {
+                        logger.info("报警数据：" + notice);
+                        // 插入报警数据
+                        Notice objNotice = new Notice();
+                        objNotice.setNotice(notice);
+                        objNotice.setNumber(info.getNumber());
+                        objNotice.setPeriods(info.getPeriods());
+                        objNotice.setAddtime(new Date());
+                        objNotice.setType(TextUtils.checkType(info.getNumber()));
+                        objNotice.setSource("新疆");
+                        try {
+                            noticeMapper.insert(objNotice);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        //TODO 发送报警短信
+                        PushUtils.broadcastAll("报警", notice, notice, 1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                PushUtils.broadcastAll("时时彩助手", info.toString(), info.toString(), 0);
+
+            } else {
+                break;// 倒着判断，只要有一个存在，那么前面的肯定也都存在 所以直接跳出循环
+            }
+        }
+
     }
 
     private void getData(Date date) {
@@ -116,15 +219,25 @@ public class MyListener implements ServletContextListener {
                     // 插入
                     info.setAddtime(date);
                     info.setSource(0);
-                    infoMapper.insert(info);
+                    try {
+                        infoMapper.insert(info);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     // 获取当前所有数据，看看是否报警
                     try {
                         InfoExample example = new InfoExample();
-                        example.setOrderByClause("periods desc");
+                        example.setOrderByClause("periods asc");
                         Criteria createCriteria = example.createCriteria();
                         createCriteria.andAddtimeEqualTo(date);
                         createCriteria.andSourceEqualTo(0);
-                        List<Info> list = infoMapper.selectByExample(example);
+                        List<Info> list = null;
+                        try {
+                            list = infoMapper.selectByExample(example);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         String notice = TextUtils.notice(list);
 
                         if (!StringUtils.isEmpty(notice)) {
@@ -137,7 +250,11 @@ public class MyListener implements ServletContextListener {
                             objNotice.setAddtime(new Date());
                             objNotice.setType(TextUtils.checkType(info.getNumber()));
                             objNotice.setSource("重庆");
-                            noticeMapper.insert(objNotice);
+                            try {
+                                noticeMapper.insert(objNotice);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             //TODO 发送报警短信
                             PushUtils.broadcastAll("报警", notice, notice, 1);
                         }
@@ -160,7 +277,13 @@ public class MyListener implements ServletContextListener {
         createCriteria.andAddtimeEqualTo(date);
         createCriteria.andPeriodsEqualTo(periods);
         createCriteria.andSourceEqualTo(source);
-        return infoMapper.countByExample(example);
+        long result = -1;
+        try {
+            result = infoMapper.countByExample(example);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

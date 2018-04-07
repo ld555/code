@@ -14,7 +14,7 @@ public class TextUtils {
      * 报警逻辑 1、60有7把不出 2、120有15把不出 3、30有42把不出 4，30和豹子同时有19把不出
      */
     public static String notice(List<Info> list) {
-        if (list.size() < 7) return null;
+        if (list != null && list.size() < 7) return null;
         int s120 = 0;
         int s60 = 0;
         int s30 = 0;
@@ -26,11 +26,11 @@ public class TextUtils {
             Info info = list.get(i);
             String number = info.getNumber();
             int result = checkNum(number);
-            if (list.size() >= 7 && count <= 7 && result == 1) {
-                s60++;
-            }
             if (list.size() >= 15 && count <= 15 && result == 0) {
                 s120++;
+            }
+            if (list.size() >= 7 && count <= 7 && result == 1) {
+                s60++;
             }
             if (list.size() >= 42 && count <= 42 && result == 2) {
                 s30++;
@@ -50,9 +50,9 @@ public class TextUtils {
             sb.append("<30>连续42期没有出现 ");
         }
         if (s30 == 0 && sbz == 0 && list.size() >= 19) {
-            sb.append("<30>和<豹子>同时连续19期没有出现");
+            sb.append("<30>和<豹子>同时连续19期没有出现 ");
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     public static String checkType(String number) {
