@@ -123,6 +123,7 @@ public class MyListener implements ServletContextListener {
                         example.setOrderByClause("periods desc");
                         Criteria createCriteria = example.createCriteria();
                         createCriteria.andAddtimeEqualTo(date);
+                        createCriteria.andSourceEqualTo(0);
                         List<Info> list = infoMapper.selectByExample(example);
                         String notice = TextUtils.notice(list);
 
