@@ -69,7 +69,7 @@ public class ApiController {
 
     @ResponseBody
     @RequestMapping(value = "/list")
-    public Map<String, Object> list(String time, String uuid, String timestamp, String digest, String source) {
+    public Map<String, Object> list(String time, String uuid, String timestamp, String digest, @RequestParam(value = "source",defaultValue = "0") Integer source) {
         Map<String, Object> map = new HashMap<>();
         int result = userService.vaild(uuid, timestamp, digest);
         if (result != 0) {
@@ -86,7 +86,7 @@ public class ApiController {
 
     @ResponseBody
     @RequestMapping(value = "/history")
-    public Map<String, Object> history(String time, String uuid, String timestamp, String digest, String source) {
+    public Map<String, Object> history(String time, String uuid, String timestamp, String digest, @RequestParam(value = "source",defaultValue = "0") Integer source) {
         Map<String, Object> map = new HashMap<>();
         int result = userService.vaild(uuid, timestamp, digest);
 

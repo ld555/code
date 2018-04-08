@@ -41,18 +41,12 @@ public class InfoService {
      * @param date
      * @return
      */
-    public List<Info> getInfos(Date date, String source) {
+    public List<Info> getInfos(Date date, Integer source) {
         InfoExample example = new InfoExample();
         example.setOrderByClause("periods asc");
         Criteria createCriteria = example.createCriteria();
         createCriteria.andAddtimeEqualTo(date);
-        if ("chongqing".equals(source)) {
-            createCriteria.andSourceEqualTo(0);
-        } else if ("xinjiang".equals(source)) {
-            createCriteria.andSourceEqualTo(1);
-        } else {
-            createCriteria.andSourceEqualTo(0);
-        }
+        createCriteria.andSourceEqualTo(source);
         return infoMapper.selectByExample(example);
     }
 
@@ -63,15 +57,11 @@ public class InfoService {
      * @param days
      * @return
      */
-    public List<Info> getInfos(Date date, Integer days, String source) {
+    public List<Info> getInfos(Date date, Integer days, Integer source) {
         InfoExample example = new InfoExample();
         Criteria createCriteria = example.createCriteria();
         createCriteria.andAddtimeBetween(TimeUtils.getDate(date, -days), TimeUtils.getDate(date, -1));
-        if ("chongqing".equals(source)) {
-            createCriteria.andSourceEqualTo(0);
-        } else if ("xinjiang".equals(source)) {
-            createCriteria.andSourceEqualTo(1);
-        }
+        createCriteria.andSourceEqualTo(source);
         return infoMapper.selectByExample(example);
     }
 
@@ -82,7 +72,7 @@ public class InfoService {
      * @param days
      * @return
      */
-    public List<String[]> getHistory(Date date, Integer days, String source) {
+    public List<String[]> getHistory(Date date, Integer days, Integer source) {
         List<String[]> result = new ArrayList<>();
         String key = REDIS_CAIPIAO_HISTORY_INFO + ":" + TimeUtils.getTime(date) + ":" + source;
         String value = jedisClient.get(key);
