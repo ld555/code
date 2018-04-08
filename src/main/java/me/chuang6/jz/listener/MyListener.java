@@ -134,21 +134,21 @@ public class MyListener implements ServletContextListener {
 
                     String notice = TextUtils.notice(list);
 
-                    if (!StringUtils.isEmpty(notice)) {
-                        logger.info("报警数据：" + notice);
-                        // 插入报警数据
-                        Notice objNotice = new Notice();
-                        objNotice.setNotice(notice);
-                        objNotice.setNumber(info.getNumber());
-                        objNotice.setPeriods(info.getPeriods());
-                        objNotice.setAddtime(new Date());
-                        objNotice.setType(TextUtils.checkType(info.getNumber()));
-                        objNotice.setSource(1);
-                        try {
-                            noticeMapper.insert(objNotice);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    logger.info("报警数据：" + notice);
+                    // 插入报警数据
+                    Notice objNotice = new Notice();
+                    objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
+                    objNotice.setNumber(info.getNumber());
+                    objNotice.setPeriods(info.getPeriods());
+                    objNotice.setAddtime(new Date());
+                    objNotice.setType(TextUtils.checkType(info.getNumber()));
+                    objNotice.setSource(1);
+                    try {
+                        noticeMapper.insert(objNotice);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (StringUtils.isNotEmpty(notice)) {
                         //TODO 发送报警短信
                         PushUtils.broadcastAll("报警", notice, notice, 2);
                     }
@@ -240,24 +240,25 @@ public class MyListener implements ServletContextListener {
 
                         String notice = TextUtils.notice(list);
 
-                        if (!StringUtils.isEmpty(notice)) {
-                            logger.info("报警数据：" + notice);
-                            // 插入报警数据
-                            Notice objNotice = new Notice();
-                            objNotice.setNotice(notice);
-                            objNotice.setNumber(info.getNumber());
-                            objNotice.setPeriods(info.getPeriods());
-                            objNotice.setAddtime(new Date());
-                            objNotice.setType(TextUtils.checkType(info.getNumber()));
-                            objNotice.setSource(0);
-                            try {
-                                noticeMapper.insert(objNotice);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        logger.info("报警数据：" + notice);
+                        // 插入报警数据
+                        Notice objNotice = new Notice();
+                        objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
+                        objNotice.setNumber(info.getNumber());
+                        objNotice.setPeriods(info.getPeriods());
+                        objNotice.setAddtime(new Date());
+                        objNotice.setType(TextUtils.checkType(info.getNumber()));
+                        objNotice.setSource(0);
+                        try {
+                            noticeMapper.insert(objNotice);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (StringUtils.isNotEmpty(notice)) {
                             //TODO 发送报警短信
                             PushUtils.broadcastAll("报警", notice, notice, 1);
                         }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

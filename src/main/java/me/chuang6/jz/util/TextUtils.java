@@ -18,39 +18,55 @@ public class TextUtils {
         int s120 = 0;
         int s60 = 0;
         int s30 = 0;
-        int sbz = 0;// 豹子
-        int count = 0;
+        int bz30 = 0;// 豹子30
+        boolean b_120 = false;
+        boolean b_60 = false;
+        boolean b_30 = false;
+        boolean b_bz30 = false;
         for (int i = list.size() - 1; i >= 0; i--) {
-            count++;
-            if (count == 43) break;
-            Info info = list.get(i);
-            String number = info.getNumber();
+            String number = list.get(i).getNumber();
             int result = checkNum(number);
-            if (list.size() >= 15 && count <= 15 && result == 0) {
-                s120++;
+            if (!b_bz30) {
+                if (result != 2 && result != 3) {
+                    bz30++;
+                } else {
+                    b_bz30 = true;
+                }
             }
-            if (list.size() >= 7 && count <= 7 && result == 1) {
-                s60++;
+            if (!b_120) {
+                if (result != 0) {
+                    s120++;
+                } else {
+                    b_120 = true;
+                }
             }
-            if (list.size() >= 42 && count <= 42 && result == 2) {
-                s30++;
+            if (!b_30) {
+                if (result != 2) {
+                    s30++;
+                } else {
+                    b_30 = true;
+                }
             }
-            if (list.size() >= 19 && count <= 19 && result == 3) {
-                sbz++;
+            if (!b_60) {
+                if (result != 1) {
+                    s60++;
+                } else {
+                    b_60 = true;
+                }
             }
         }
         StringBuilder sb = new StringBuilder();
-        if (s120 == 0 && list.size() >= 15) {
-            sb.append("<120>连续15期没有出现 ");
+        if (s120 >= 15) {
+            sb.append(String.format("<120>连续%d期没有出现 ", s120));
         }
-        if (s60 == 0 && list.size() >= 7) {
-            sb.append("<60>连续7期没有出现 ");
+        if (s60 >= 7) {
+            sb.append(String.format("<60>连续%d期没有出现 ", s60));
         }
-        if (s30 == 0 && list.size() >= 42) {
-            sb.append("<30>连续42期没有出现 ");
+        if (s30 >= 42) {
+            sb.append(String.format("<30>连续%d期没有出现 ", s30));
         }
-        if (s30 == 0 && sbz == 0 && list.size() >= 19) {
-            sb.append("<30>和<豹子>同时连续19期没有出现 ");
+        if (bz30 >= 19) {
+            sb.append(String.format("<30>和<豹子>同时连续%d期没有出现 ", bz30));
         }
         return sb.toString().trim();
     }
@@ -135,7 +151,7 @@ public class TextUtils {
             if (value == 1 || value == 4) {
                 result = 4;
             } else {
-                value = 3;
+                result = 3;
             }
         } else if (map.size() == 1) {
             // 五连
