@@ -52,30 +52,30 @@
     <div class="col-md-12">
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <%-- <li><a href="${pageContext.request.contextPath}/api/logs?pn=1">首页
-                </a></li> --%>
+                <li><a href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=1">首页
+                </a></li>
                 <li><a
-                        href="${pageContext.request.contextPath}/api/logs?pn=${requestScope.pageInfo.prePage }"
+                        href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=${requestScope.pageInfo.prePage }"
                         aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
                 </a></li>
                 <c:forEach var="item"
                            items="${requestScope.pageInfo.navigatepageNums }">
                     <c:if test="${item == requestScope.pageInfo.pageNum }">
                         <li class="active"><a
-                                href="${pageContext.request.contextPath}/api/logs?pn=${item }">${item }</a></li>
+                                href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=${item }">${item }</a></li>
                     </c:if>
                     <c:if test="${item != requestScope.pageInfo.pageNum }">
                         <li><a
-                                href="${pageContext.request.contextPath}/api/logs?pn=${item }">${item }</a></li>
+                                href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=${item }">${item }</a></li>
                     </c:if>
                 </c:forEach>
                 <li><a
-                        href="${pageContext.request.contextPath}/api/logs?pn=${requestScope.pageInfo.nextPage }"
+                        href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=${requestScope.pageInfo.nextPage }"
                         aria-label="Next"> <span aria-hidden="true">&raquo;</span>
                 </a></li>
-                <%-- <li><a
-                    href="${pageContext.request.contextPath}/api/logs?pn=${requestScope.pageInfo.pages }">末页
-                </a></li> --%>
+                <li><a
+                    href="${pageContext.request.contextPath}/api/logs?source=${source}&pn=${requestScope.pageInfo.pages }">末页
+                </a></li>
             </ul>
         </nav>
     </div>

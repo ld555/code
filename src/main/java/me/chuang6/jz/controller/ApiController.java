@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +43,7 @@ public class ApiController {
             List<Notice> list = noticeService.getNoticeList(source);
             PageInfo<Notice> pageInfo = new PageInfo<Notice>(list, 10);
             request.setAttribute("pageInfo", pageInfo);
+            request.setAttribute("source", source);
             return "logs";
         } catch (Exception e) {
             request.setAttribute("msg", e.getMessage());
