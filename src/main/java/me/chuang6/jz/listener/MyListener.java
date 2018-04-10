@@ -20,6 +20,9 @@ import org.jsoup.select.Elements;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import me.chuang6.jz.bean.Info;
 import me.chuang6.jz.bean.InfoExample;
 import me.chuang6.jz.bean.InfoExample.Criteria;
@@ -85,8 +88,8 @@ public class MyListener implements ServletContextListener {
                 Elements trs = elements.get(i).select("tr");
 
                 for (int j = 1; j < trs.size(); j++) {
-                    String td1 = trs.get(j).select("td").get(0).text();//期号
-                    String td2 = trs.get(j).select("td").get(1).text();//号码
+                    String td1 = trs.get(j).select("td").get(0).text();// 期号
+                    String td2 = trs.get(j).select("td").get(1).text();// 号码
                     if (!"--".equals(td1)) {
                         String td1_result = td1.substring(8, 10);
                         String td2_result = td2.replace(",", " ");
@@ -101,7 +104,71 @@ public class MyListener implements ServletContextListener {
                     return info1.getPeriods().compareTo(info2.getPeriods());
                 }
             });
-            insert(list);
+            if (list.size() == 0) {
+                Elements select = doc.select("div.con_left");
+                Elements select2 = select.select("span");
+                Elements select3 = select.select("i");
+                //System.out.println(select2.get(0).text());
+                String time = select2.get(0).text().trim();// 2018040996
+                //System.out.println(select3.text());
+                String number = select3.text().trim();// 5 5 8 0 0
+                int periods = Integer.valueOf(time.substring(8));
+                logger.info(TimeUtils.getDate2(time.substring(0,8)));
+                logger.info(periods);
+                logger.info(number);
+                logger.info(time.substring(0,8));
+                if (getCount(periods, TimeUtils.getDate2(time.substring(0,8)), 1) == 0) {
+                    Info info = new Info();
+                    info.setSource(1);
+                    info.setAddtime(TimeUtils.getDate2(time.substring(0,8)));
+                    info.setNumber(number);
+                    info.setPeriods(periods);
+
+                    try {
+                        infoMapper.insert(info);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // 获取当前所有数据，看看是否报警
+                    try {
+                        InfoExample example = new InfoExample();
+                        example.setOrderByClause("addtime desc,periods desc");
+                        Criteria createCriteria = example.createCriteria();
+                        createCriteria.andSourceEqualTo(1);
+                        List<Info> list2 = null;
+                        try {
+                            list2 = infoMapper.selectByExampleLimit(example);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        logger.info("xjssc list "+list2);
+                        String notice = TextUtils.notice(list2);
+                        if (StringUtils.isNotEmpty(notice)) {
+                            logger.info("报警数据：" + notice);
+                            // 插入报警数据
+                            Notice objNotice = new Notice();
+                            objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
+                            objNotice.setNumber(info.getNumber());
+                            objNotice.setPeriods(info.getPeriods());
+                            objNotice.setAddtime(TimeUtils.getDate2(time));
+                            objNotice.setType(TextUtils.checkType(info.getNumber()));
+                            objNotice.setSource(1);
+                            try {
+                                noticeMapper.insert(objNotice);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            // TODO 发送报警短信
+                            PushUtils.broadcastAll("报警", notice, notice, 2);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                insert(list);
+            }
         }
     }
 
@@ -121,35 +188,35 @@ public class MyListener implements ServletContextListener {
                 // 获取当前所有数据，看看是否报警
                 try {
                     InfoExample example = new InfoExample();
-                    example.setOrderByClause("periods asc");
+                    example.setOrderByClause("addtime desc,periods desc");
                     Criteria createCriteria = example.createCriteria();
-                    createCriteria.andAddtimeEqualTo(new Date());
                     createCriteria.andSourceEqualTo(1);
+
                     List<Info> list = null;
                     try {
-                        list = infoMapper.selectByExample(example);
+                        list = infoMapper.selectByExampleLimit(example);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
+                    logger.info("xjssc list:"+list);
                     String notice = TextUtils.notice(list);
-
-                    logger.info("报警数据：" + notice);
-                    // 插入报警数据
-                    Notice objNotice = new Notice();
-                    objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
-                    objNotice.setNumber(info.getNumber());
-                    objNotice.setPeriods(info.getPeriods());
-                    objNotice.setAddtime(new Date());
-                    objNotice.setType(TextUtils.checkType(info.getNumber()));
-                    objNotice.setSource(1);
-                    try {
-                        noticeMapper.insert(objNotice);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     if (StringUtils.isNotEmpty(notice)) {
-                        //TODO 发送报警短信
+                        logger.info("报警数据：" + notice);
+                        // 插入报警数据
+                        Notice objNotice = new Notice();
+                        objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
+                        objNotice.setNumber(info.getNumber());
+                        objNotice.setPeriods(info.getPeriods());
+                        objNotice.setAddtime(new Date());
+                        objNotice.setType(TextUtils.checkType(info.getNumber()));
+                        objNotice.setSource(1);
+                        try {
+                            noticeMapper.insert(objNotice);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        // TODO 发送报警短信
                         PushUtils.broadcastAll("报警", notice, notice, 2);
                     }
                 } catch (Exception e) {
@@ -163,6 +230,11 @@ public class MyListener implements ServletContextListener {
         }
 
     }
+    
+    public static void main(String[] args) {
+		String sss = "2018040996";
+		System.out.println(sss.substring(0,8));
+	}
 
     private void getData(Date date) {
         String time = TimeUtils.getTime(date, "yyyyMMdd");
@@ -227,9 +299,8 @@ public class MyListener implements ServletContextListener {
                     // 获取当前所有数据，看看是否报警
                     try {
                         InfoExample example = new InfoExample();
-                        example.setOrderByClause("periods asc");
+                        example.setOrderByClause("addtime desc,periods desc");
                         Criteria createCriteria = example.createCriteria();
-                        createCriteria.andAddtimeEqualTo(date);
                         createCriteria.andSourceEqualTo(0);
                         List<Info> list = null;
                         try {
@@ -237,25 +308,25 @@ public class MyListener implements ServletContextListener {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
+                        logger.info("cqssc list:"+list);
                         String notice = TextUtils.notice(list);
-
-                        logger.info("报警数据：" + notice);
-                        // 插入报警数据
-                        Notice objNotice = new Notice();
-                        objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
-                        objNotice.setNumber(info.getNumber());
-                        objNotice.setPeriods(info.getPeriods());
-                        objNotice.setAddtime(new Date());
-                        objNotice.setType(TextUtils.checkType(info.getNumber()));
-                        objNotice.setSource(0);
-                        try {
-                            noticeMapper.insert(objNotice);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                         if (StringUtils.isNotEmpty(notice)) {
-                            //TODO 发送报警短信
+                            logger.info("报警数据：" + notice);
+                            // 插入报警数据
+                            Notice objNotice = new Notice();
+                            objNotice.setNotice(StringUtils.isEmpty(notice) ? "无" : notice);
+                            objNotice.setNumber(info.getNumber());
+                            objNotice.setPeriods(info.getPeriods());
+                            objNotice.setAddtime(new Date());
+                            objNotice.setType(TextUtils.checkType(info.getNumber()));
+                            objNotice.setSource(0);
+                            try {
+                                noticeMapper.insert(objNotice);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            // TODO 发送报警短信
                             PushUtils.broadcastAll("报警", notice, notice, 1);
                         }
 

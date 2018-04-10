@@ -23,7 +23,7 @@ public class TextUtils {
         boolean b_60 = false;
         boolean b_30 = false;
         boolean b_bz30 = false;
-        for (int i = list.size() - 1; i >= 0; i--) {
+        for (int i = 0; i < list.size(); i++) {
             String number = list.get(i).getNumber();
             int result = checkNum(number);
             if (!b_bz30) {
