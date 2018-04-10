@@ -18,6 +18,8 @@ public interface InfoMapper {
 
     List<Info> selectByExample(InfoExample example);
 
+    List<Info> selectByExampleLimit(InfoExample example);
+
     Info selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Info record, @Param("example") InfoExample example);
