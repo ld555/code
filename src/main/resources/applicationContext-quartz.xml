@@ -21,17 +21,15 @@
         <property name="concurrent" value="false"/>
     </bean>
 
-    <!--导入调度配置-->
     <bean id="chongqingJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail">
             <ref bean="chongqingTaskJob"/>
         </property>
         <property name="cronExpression">
-            <value>0/30 * 10-2 * * ?</value>
+            <value>30/30 * 10-2 * * ?</value>
         </property>
     </bean>
 
-    <!--导出调度配置-->
     <bean id="xinjiangJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail">
             <ref bean="xinjiangTaskJob"/>
