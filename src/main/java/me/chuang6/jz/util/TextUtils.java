@@ -1,12 +1,12 @@
 package me.chuang6.jz.util;
 
+import me.chuang6.jz.bean.Info;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import me.chuang6.jz.bean.Info;
 
 public class TextUtils {
 
@@ -56,13 +56,13 @@ public class TextUtils {
             }
         }
         StringBuilder sb = new StringBuilder();
-        if (s120 >= 15) {
+        if (s120 >= 10) {
             sb.append(String.format("<120>连续%d期没有出现 ", s120));
         }
         if (s60 >= 7) {
             sb.append(String.format("<60>连续%d期没有出现 ", s60));
         }
-        if (s30 >= 42) {
+        if (s30 >= 25) {
             sb.append(String.format("<30>连续%d期没有出现 ", s30));
         }
         if (bz30 >= 19) {
@@ -157,32 +157,6 @@ public class TextUtils {
             // 五连
             result = 5;
         }
-
-        // if (Pattern.compile("(\\w)\\1{4,}").matcher(number).find()) {
-        // //五连
-        // result = 5;
-        // } else if (Pattern.compile("(\\w)\\1{3,}").matcher(number).find()) {
-        // //四连
-        // result = 4;
-        // } else if (Pattern.compile("(\\w)\\1{2,}").matcher(number).find()) {
-        // //三连
-        // result = 3;
-        // } else if (Pattern.compile("(\\w)\\1{1,}").matcher(number).find()) {
-        // Matcher matcher = Pattern.compile("(\\w)\\1{1,}").matcher(number);
-        // int count = 0;
-        // while (matcher.find()) {
-        // count++;
-        // }
-        // if (count == 1) {
-        // //一对
-        // result = 1;
-        // } else {
-        // //两对
-        // result = 2;
-        // }
-        //
-        // }
-        // System.out.println(number + "======" + result);
         return result;
     }
 }

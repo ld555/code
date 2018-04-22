@@ -178,6 +178,26 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.2</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -212,7 +232,7 @@
 			<id>dev</id>
 			<properties>
 				<jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
-				<jdbc.jdbcUrl>jdbc:mysql://server2:3306/caipiao_dev?characterEncoding=UTF-8</jdbc.jdbcUrl>
+				<jdbc.jdbcUrl>jdbc:mysql://118.31.41.177:3306/caipiao_dev?characterEncoding=UTF-8</jdbc.jdbcUrl>
 				<jdbc.user>caipiao_dev</jdbc.user>
 				<jdbc.password>m7bRAhkBFHS2Wdzi</jdbc.password>
 				<api_ttl>99999999</api_ttl>

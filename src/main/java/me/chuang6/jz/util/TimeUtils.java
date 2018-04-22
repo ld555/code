@@ -53,20 +53,4 @@ public class TimeUtils {
 		}
 		return null;
 	}
-	
-	/**
-	 * 格式化Time
-	 * @param time
-	 * @return
-	 */
-	public static Date getDate2(String time) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		try {
-			return sdf.parse(time);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 }

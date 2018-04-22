@@ -1,27 +1,27 @@
 package me.chuang6.jz.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import me.chuang6.jz.bean.Notice;
 import me.chuang6.jz.service.InfoService;
 import me.chuang6.jz.service.NoticeService;
 import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.MessageUtils;
 import me.chuang6.jz.util.TimeUtils;
+import me.chuang6.jz.work.ChongQingWork;
+import me.chuang6.jz.work.XinjiangWork;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -35,6 +35,20 @@ public class ApiController {
 
     @Autowired
     private NoticeService noticeService;
+
+    @Resource(name="chongQingWork")
+    private ChongQingWork chongQingWork;
+
+    @Resource(name="xinjiangWork")
+    private XinjiangWork xinjiangWork;
+
+    @ResponseBody
+    @RequestMapping("/runWork")
+    public String runWork(){
+        chongQingWork.scanInfoFromWebSite();
+        xinjiangWork.scanInfoFromWebSite();
+        return "run success";
+    }
 
     @RequestMapping(value = "logs")
     public String log(@RequestParam(value = "pn", defaultValue = "1") Integer pn, HttpServletRequest request, @RequestParam(value = "source", defaultValue = "0") Integer source) {

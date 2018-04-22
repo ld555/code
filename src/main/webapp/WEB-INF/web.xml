@@ -17,9 +17,9 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<listener>
-		<listener-class>me.chuang6.jz.listener.MyListener</listener-class>
-	</listener>
+	<!--<listener>-->
+		<!--<listener-class>me.chuang6.jz.listener.MyListener</listener-class>-->
+	<!--</listener>-->
 
 	<!--2、springmvc的前端控制器，拦截所有请求 -->
 	<!-- The front controller of this Spring Web application, responsible for 

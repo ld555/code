@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+
+    <!--重庆时时彩任务-->
+    <bean id="chongQingWork" class="me.chuang6.jz.work.ChongQingWork"></bean>
+    <!--新疆时时彩任务-->
+    <bean id="xinjiangWork" class="me.chuang6.jz.work.XinjiangWork"></bean>
+
+    <!--导入job配置-->
+    <bean id="chongqingTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="chongQingWork"/>
+        <property name="targetMethod" value="scanInfoFromWebSite"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <!--导出job配置-->
+    <bean id="xinjiangTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="xinjiangWork"/>
+        <property name="targetMethod" value="scanInfoFromWebSite"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!--导入调度配置-->
+    <bean id="chongqingJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="chongqingTaskJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0/30 * 10-2 * * ?</value>
+        </property>
+    </bean>
+
+    <!--导出调度配置-->
+    <bean id="xinjiangJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="xinjiangTaskJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>30 0/10 10-2 * * ?</value>
+        </property>
+    </bean>
+    <!--触发器配置-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="true"/>
+        <property name="triggers">
+            <list>
+                <ref bean="xinjiangJobTrigger"/>
+                <ref bean="chongqingJobTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
