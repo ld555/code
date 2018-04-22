@@ -7,7 +7,8 @@ import me.chuang6.jz.dao.UserMapper;
 import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.AESUtils;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.Random;
  */
 @Service
 public class UserServiceImpl implements UserService{
-    private Logger logger = Logger.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Value("${api_ttl}")
     private int API_TTL;
@@ -68,7 +69,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int vaild(String uuid, String timestamp, String digest) {
-        logger.info("超时时间TTL:" + API_TTL);
         if (uuid == null || timestamp == null || digest == null) {
             return -1002;// 参数错误
         }
