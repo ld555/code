@@ -73,4 +73,17 @@ public class Notice implements Serializable{
     public void setSource(Integer source) {
         this.source = source;
     }
+
+    @Override
+    public String toString() {
+        return "Notice{" +
+                "id=" + id +
+                ", periods=" + periods +
+                ", number='" + number + '\'' +
+                ", type='" + type + '\'' +
+                ", notice='" + notice + '\'' +
+                ", addtime=" + addtime +
+                ", source=" + source +
+                '}';
+    }
 }

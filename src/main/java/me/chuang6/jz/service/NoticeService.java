@@ -1,26 +1,13 @@
 package me.chuang6.jz.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import me.chuang6.jz.bean.Notice;
 import org.springframework.stereotype.Service;
 
-import me.chuang6.jz.bean.Notice;
-import me.chuang6.jz.bean.NoticeExample;
-import me.chuang6.jz.dao.NoticeMapper;
+import java.util.List;
 
 @Service
-public class NoticeService {
+public interface NoticeService {
 
-    @Autowired
-    private NoticeMapper noticeMapper;
-
-
-    public List<Notice> getNoticeList(Integer source) {
-        NoticeExample example = new NoticeExample();
-        example.setOrderByClause("id desc");
-        example.createCriteria().andSourceEqualTo(source);
-        return noticeMapper.selectByExample(example);
-    }
+    List<Notice> getNoticeList(Integer source);
 
 }
