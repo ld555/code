@@ -9,6 +9,9 @@ import me.chuang6.jz.dao.InfoMapper;
 import me.chuang6.jz.service.InfoService;
 import me.chuang6.jz.util.TextUtils;
 import me.chuang6.jz.util.TimeUtils;
+import me.chuang6.jz.work.ChongQingWork;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class InfoServiceImpl implements InfoService{
+
+    private static final Logger logger = LoggerFactory.getLogger(InfoServiceImpl.class);
+
     @Value("${REDIS_CAIPIAO_HISTORY_INFO_KEY}")
     private String REDIS_CAIPIAO_HISTORY_INFO;
 
@@ -94,6 +100,37 @@ public class InfoServiceImpl implements InfoService{
         }
         result.addAll(calculate(parseData(getInfos(date, source))));
         return result;
+    }
+
+    @Override
+    public long getCount(Integer periods, Date date, Integer source) {
+        InfoExample example = new InfoExample();
+        InfoExample.Criteria createCriteria = example.createCriteria();
+        createCriteria.andAddtimeEqualTo(date);
+        createCriteria.andPeriodsEqualTo(periods);
+        createCriteria.andSourceEqualTo(source);
+        long result = -1;
+        try {
+            result = infoMapper.countByExample(example);
+        } catch (Exception e) {
+            logger.error("InfoServiceImpl.getCount is error e={}", e);
+        }
+        return result;
+    }
+
+    @Override
+    public int insert(Info info) {
+        logger.info("InfoServiceImpl.insert info={}",info);
+        return infoMapper.insert(info);
+    }
+
+    @Override
+    public List<Info> getInfosLimit(int source) {
+        InfoExample example = new InfoExample();
+        example.setOrderByClause("addtime desc,periods desc");
+        InfoExample.Criteria createCriteria = example.createCriteria();
+        createCriteria.andSourceEqualTo(source);
+        return infoMapper.selectByExampleLimit(example);
     }
 
     /**

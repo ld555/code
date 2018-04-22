@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping("/api")
@@ -44,9 +46,16 @@ public class ApiController {
 
     @ResponseBody
     @RequestMapping("/runWork")
-    public String runWork(){
-        chongQingWork.scanInfoFromWebSite();
-        xinjiangWork.scanInfoFromWebSite();
+    public String runWork() {
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        try {
+            pool.submit(() -> chongQingWork.scanInfoFromWebSite());
+            pool.submit(() -> xinjiangWork.scanInfoFromWebSite());
+        } catch (Exception e) {
+            return "run error";
+        } finally {
+            pool.shutdown();
+        }
         return "run success";
     }
 

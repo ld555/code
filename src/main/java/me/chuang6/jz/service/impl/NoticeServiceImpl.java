@@ -4,6 +4,8 @@ import me.chuang6.jz.bean.Notice;
 import me.chuang6.jz.bean.NoticeExample;
 import me.chuang6.jz.dao.NoticeMapper;
 import me.chuang6.jz.service.NoticeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ import java.util.List;
  */
 @Service
 public class NoticeServiceImpl implements NoticeService{
+
+    private static final Logger logger = LoggerFactory.getLogger(NoticeServiceImpl.class);
+
     @Autowired
     private NoticeMapper noticeMapper;
 
@@ -24,5 +29,11 @@ public class NoticeServiceImpl implements NoticeService{
         example.setOrderByClause("id desc");
         example.createCriteria().andSourceEqualTo(source);
         return noticeMapper.selectByExample(example);
+    }
+
+    @Override
+    public int insert(Notice notice) {
+        logger.info("NoticeServiceImpl.insert notice={}",notice);
+        return noticeMapper.insert(notice);
     }
 }

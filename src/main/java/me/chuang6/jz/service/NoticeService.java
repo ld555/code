@@ -10,4 +10,6 @@ public interface NoticeService {
 
     List<Notice> getNoticeList(Integer source);
 
+    int insert(Notice notice);
+
 }

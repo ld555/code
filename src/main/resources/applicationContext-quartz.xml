@@ -26,7 +26,7 @@
             <ref bean="chongqingTaskJob"/>
         </property>
         <property name="cronExpression">
-            <value>30/30 * 10-2 * * ?</value>
+            <value>45 1,6/5 10-2 * * ?</value>
         </property>
     </bean>
 
@@ -35,7 +35,7 @@
             <ref bean="xinjiangTaskJob"/>
         </property>
         <property name="cronExpression">
-            <value>30 0/10 10-2 * * ?</value>
+            <value>59 0/10 10-2 * * ?</value>
         </property>
     </bean>
     <!--触发器配置-->
