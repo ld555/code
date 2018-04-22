@@ -238,15 +238,6 @@
 				<api_ttl>99999999</api_ttl>
 			</properties>
 		</profile>
-		<profile>
-			<id>pro</id>
-			<properties>
-				<jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
-				<jdbc.jdbcUrl>jdbc:mysql://localhost:3306/caipiao?characterEncoding=UTF-8</jdbc.jdbcUrl>
-				<jdbc.user>caipiao</jdbc.user>
-				<jdbc.password>NwakFmdbJT</jdbc.password>
-				<api_ttl>10</api_ttl>
-			</properties>
-		</profile>
+
 	</profiles>
 </project>
