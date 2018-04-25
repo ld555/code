@@ -69,7 +69,7 @@ public class XinjiangWork {
                     objNotice.setNotice(notice);
                     objNotice.setNumber(info.getNumber());
                     objNotice.setPeriods(info.getPeriods());
-                    objNotice.setAddtime(TimeUtils.getDate2(time));
+                    objNotice.setAddtime(TimeUtils.getDate2(time.substring(0, 8)));
                     objNotice.setType(TextUtils.checkType(info.getNumber()));
                     objNotice.setSource(1);
                     noticeService.insert(objNotice);

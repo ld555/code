@@ -5,12 +5,19 @@
 
     <!--重庆时时彩任务-->
     <bean id="chongQingWork" class="me.chuang6.jz.work.ChongQingWork"></bean>
+    <!--重庆时时彩任务-->
+    <bean id="chongQingWork2" class="me.chuang6.jz.work.ChongQingWork2"></bean>
     <!--新疆时时彩任务-->
     <bean id="xinjiangWork" class="me.chuang6.jz.work.XinjiangWork"></bean>
 
     <!--导入job配置-->
     <bean id="chongqingTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="chongQingWork"/>
+        <property name="targetMethod" value="scanInfoFromWebSite"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="chongqingTaskJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="chongQingWork2"/>
         <property name="targetMethod" value="scanInfoFromWebSite"/>
         <property name="concurrent" value="false"/>
     </bean>
@@ -29,6 +36,14 @@
             <value>45 1,6/5 10-2 * * ?</value>
         </property>
     </bean>
+    <bean id="chongqingJobTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="chongqingTaskJob2"/>
+        </property>
+        <property name="cronExpression">
+            <value>59 1/1 0 * * ?</value>
+        </property>
+    </bean>
 
     <bean id="xinjiangJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail">
@@ -45,6 +60,7 @@
             <list>
                 <ref bean="xinjiangJobTrigger"/>
                 <ref bean="chongqingJobTrigger"/>
+                <ref bean="chongqingJobTrigger2"/>
             </list>
         </property>
     </bean>

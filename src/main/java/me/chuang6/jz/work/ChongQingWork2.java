@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Created by liuchuang on 2018/4/21.
  */
-public class ChongQingWork {
+public class ChongQingWork2 {
 
     private static final Logger logger = LoggerFactory.getLogger(ChongQingWork.class);
 
@@ -40,7 +40,7 @@ public class ChongQingWork {
      */
     public void scanInfoFromWebSite() {
         logger.info("开始重庆时时彩爬虫任务......");
-        getData(TimeUtils.getDate(new Date(), 0));
+        getData(TimeUtils.getDate(new Date(), -1));
         logger.info("结束重庆时时彩爬虫任务......");
     }
 

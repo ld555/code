@@ -9,6 +9,7 @@ import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.MessageUtils;
 import me.chuang6.jz.util.TimeUtils;
 import me.chuang6.jz.work.ChongQingWork;
+import me.chuang6.jz.work.ChongQingWork2;
 import me.chuang6.jz.work.XinjiangWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,9 @@ public class ApiController {
     @Resource(name="chongQingWork")
     private ChongQingWork chongQingWork;
 
+    @Resource(name="chongQingWork2")
+    private ChongQingWork2 chongQingWork2;
+
     @Resource(name="xinjiangWork")
     private XinjiangWork xinjiangWork;
 
@@ -50,6 +54,7 @@ public class ApiController {
         ExecutorService pool = Executors.newFixedThreadPool(2);
         try {
             pool.submit(() -> chongQingWork.scanInfoFromWebSite());
+            pool.submit(() -> chongQingWork2.scanInfoFromWebSite());
             pool.submit(() -> xinjiangWork.scanInfoFromWebSite());
         } catch (Exception e) {
             return "run error";
