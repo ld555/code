@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/api")
@@ -51,17 +52,19 @@ public class ApiController {
     @ResponseBody
     @RequestMapping("/runWork")
     public String runWork() {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        long startTime = System.currentTimeMillis();
+        ExecutorService pool = Executors.newFixedThreadPool(3);
         try {
             pool.submit(() -> chongQingWork.scanInfoFromWebSite());
             pool.submit(() -> chongQingWork2.scanInfoFromWebSite());
             pool.submit(() -> xinjiangWork.scanInfoFromWebSite());
+            pool.shutdown();
+            pool.awaitTermination(10, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             return "run error";
-        } finally {
-            pool.shutdown();
         }
-        return "run success";
+        long endTime = System.currentTimeMillis();
+        return "run success. use times " + (endTime - startTime) +" ms.";
     }
 
     @RequestMapping(value = "logs")
