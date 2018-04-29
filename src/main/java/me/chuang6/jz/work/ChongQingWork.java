@@ -29,6 +29,8 @@ public class ChongQingWork {
 
     private static final String URL = "http://caipiao.163.com/award/cqssc/%s.html";
 
+    private Integer days;
+
     @Autowired
     private NoticeService noticeService;
 
@@ -40,7 +42,7 @@ public class ChongQingWork {
      */
     public void scanInfoFromWebSite() {
         logger.info("开始重庆时时彩爬虫任务......");
-        getData(TimeUtils.getDate(new Date(), 0));
+        getData(TimeUtils.getDate(new Date(), this.days));
         logger.info("结束重庆时时彩爬虫任务......");
     }
 
@@ -114,5 +116,9 @@ public class ChongQingWork {
             }
         }
 
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
     }
 }

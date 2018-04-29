@@ -9,7 +9,6 @@ import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.MessageUtils;
 import me.chuang6.jz.util.TimeUtils;
 import me.chuang6.jz.work.ChongQingWork;
-import me.chuang6.jz.work.ChongQingWork2;
 import me.chuang6.jz.work.XinjiangWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +43,7 @@ public class ApiController {
     private ChongQingWork chongQingWork;
 
     @Resource(name="chongQingWork2")
-    private ChongQingWork2 chongQingWork2;
+    private ChongQingWork chongQingWork2;
 
     @Resource(name="xinjiangWork")
     private XinjiangWork xinjiangWork;

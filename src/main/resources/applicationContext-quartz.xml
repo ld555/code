@@ -4,9 +4,13 @@
 
 
     <!--重庆时时彩任务-->
-    <bean id="chongQingWork" class="me.chuang6.jz.work.ChongQingWork"></bean>
+    <bean id="chongQingWork" class="me.chuang6.jz.work.ChongQingWork">
+        <property name="days" value="0"/>
+    </bean>
     <!--重庆时时彩任务-->
-    <bean id="chongQingWork2" class="me.chuang6.jz.work.ChongQingWork2"></bean>
+    <bean id="chongQingWork2" class="me.chuang6.jz.work.ChongQingWork">
+        <property name="days" value="-1"/>
+    </bean>
     <!--新疆时时彩任务-->
     <bean id="xinjiangWork" class="me.chuang6.jz.work.XinjiangWork"></bean>
 

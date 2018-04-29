@@ -7,6 +7,7 @@ import me.chuang6.jz.dao.UserMapper;
 import me.chuang6.jz.service.UserService;
 import me.chuang6.jz.util.AESUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService{
         }
         String openid = AESUtils.decrypt(uuid).split("#")[0];
         String cacheUUID = jedisClient.hget(REDIS_CAIPIAO_LOGIN_USER, openid);
-        if (cacheUUID == null) {
+        if (StringUtils.isBlank(cacheUUID)) {
             return -1004;// 登录过期
         }
         if (!uuid.equals(cacheUUID)) {
